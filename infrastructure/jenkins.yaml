@@ -1,0 +1,79 @@
+Parameters: 
+  InstanceType:
+    Default: t2.micro
+    Type: String
+    Description: Sizing for EC2 Instances
+
+  KeyName:
+    Default: jenkins-java
+    Type: String
+    Description: Key to access EC2 Instances via SSH
+Resources:
+  JenkinsSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http to client host
+      VpcId: !ImportValue user-management-vpc
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+  
+  JenkinsRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      ManagedPolicyArns: 
+        - "arn:aws:iam::aws:policy/CloudWatchFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              Service: 
+                - "ec2.amazonaws.com"
+            Action: 
+              - "sts:AssumeRole"
+      Path: "/"
+  JenkinsInstanceProfile: 
+    Type: "AWS::IAM::InstanceProfile"
+    Properties: 
+      Path: "/"
+      Roles: 
+        - 
+          !Ref JenkinsRole    
+  JenkinsServer:
+    Type: AWS::EC2::Instance
+    Properties:
+        InstanceType: !Ref InstanceType
+        ImageId: ami-052efd3df9dad4825
+        KeyName: !Ref KeyName
+        IamInstanceProfile: !Ref JenkinsInstanceProfile
+        UserData: 
+            Fn::Base64: 
+             
+             !Sub |
+                #!/bin/bash             
+                    apt-get update
+                    apt install default-jdk -y
+                    wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+                    sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+                    apt-get update -y
+                    apt-get install jenkins -y
+                    systemctl start jenkins
+                    systemctl enable jenkins
+                    apt-get install maven -y
+
+        SecurityGroupIds:
+          - !Ref JenkinsSecurityGroup
+        SubnetId: !ImportValue user-management-vpc-PublicSubnet1
+        Tags: 
+          - 
+            Key: "Name"
+            Value: !Sub "${AWS::StackName}"
