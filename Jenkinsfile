@@ -29,5 +29,13 @@ pipeline {
                 }
             }
         }
+        stage ('Deploy'){
+            steps {
+                sshagent(['deploy_user']) {
+                    scp webapp/target/*.war ec2-user@54.210.92.26:/usr/share/tomcat/webapps
+               
+                }   
+            }
+        }
     }
 }
