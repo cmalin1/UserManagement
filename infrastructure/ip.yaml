@@ -1,0 +1,13 @@
+Resources:
+  MyEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Tags: 
+        - Key: "Name"
+          Value: !Sub "${AWS::StackName}"
+Outputs: 
+  EIP:
+    Description: Elastic IP for our Web Server
+    Value: !Ref MyEIP 
+    Export:
+      Name: !Sub "${AWS::StackName}"

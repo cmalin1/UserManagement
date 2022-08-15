@@ -37,6 +37,12 @@ Resources:
           - 
             Key: "Name"
             Value: !Sub "${AWS::StackName}"
+  EIPWeb:
+    Type: AWS::EC2::EIPAssociation
+    Properties: 
+      EIP: !ImportValue user-management-eip
+      InstanceId: !Ref WebServerNode1
+
 Outputs:
   WebServerURL:
     Description: "URL to access our Tomcat Server"
