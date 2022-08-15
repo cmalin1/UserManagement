@@ -71,7 +71,7 @@ Resources:
                     systemctl start jenkins
                     systemctl enable jenkins
                     apt-get install maven -y
-
+                    apt install awscli -y
         SecurityGroupIds:
           - !Ref JenkinsSecurityGroup
         SubnetId: !ImportValue user-management-vpc-PublicSubnet1

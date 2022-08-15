@@ -30,6 +30,7 @@ Resources:
                     aws s3api get-object --bucket tomcat-config-cjm --key tomcat-users.xml /usr/share/tomcat/conf/tomcat-users.xml
                     service tomcat start
                     systemctl enable tomcat.service
+
         SecurityGroupIds:
           - !ImportValue user-management-security-WebSecurityGroupId
         SubnetId: !ImportValue user-management-vpc-PublicSubnet1
