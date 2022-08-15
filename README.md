@@ -1,7 +1,7 @@
 # User Management Exercise
 
 This exercise will provide you with the necessary java project to create a pipeline for Cloud Automation/DevOps.  We will use this for our weekly activities.
-## Getting Started
+## Getting Started - NOW
 
 To begin using this project:
 
