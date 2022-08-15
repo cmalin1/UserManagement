@@ -29,6 +29,17 @@ pipeline {
                 }
             }
         }
+        stage ('Deploy-Dev') {
+            steps {
+                sh """
+                    aws cloudformation deploy --stack-name user-management-vpc --template-file ./vpc.yaml
+
+                    aws cloudformation deploy --stack-name user-management-security --template-file ./security.yaml --capabilities CAPABILITY_IAM 
+
+                    aws cloudformation deploy --stack-name user-management-web --template-file ./webserver.yaml
+                """
+            }
+        }
         stage ('Deploy'){
             steps {
                 deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://50.19.187.134:8080/')], contextPath: '', war: '**/*.war ' 
