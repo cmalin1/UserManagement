@@ -5,7 +5,7 @@ Parameters:
     Description: Sizing for EC2 Instances
 
   KeyName:
-    Default: jenkins-java
+    Default: vockey
     Type: String
     Description: Key to access EC2 Instances via SSH
 
@@ -38,10 +38,10 @@ Resources:
           - 
             Key: "Name"
             Value: !Sub "${AWS::StackName}"
-  EIPWeb:
+  WebEIP:
     Type: AWS::EC2::EIPAssociation
     Properties: 
-      EIP: !ImportValue user-management-eip
+      EIP: !ImportValue WebEIP-user-management-ip
       InstanceId: !Ref WebServerNode1
 
 Outputs:

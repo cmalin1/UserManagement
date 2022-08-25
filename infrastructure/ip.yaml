@@ -1,13 +1,24 @@
 Resources:
-  MyEIP:
+  WebEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Tags: 
+        - Key: "Name"
+          Value: !Sub "${AWS::StackName}"
+  JenkinsEIP:
     Type: AWS::EC2::EIP
     Properties:
       Tags: 
         - Key: "Name"
           Value: !Sub "${AWS::StackName}"
 Outputs: 
-  EIP:
+  WebEIP:
     Description: Elastic IP for our Web Server
-    Value: !Ref MyEIP 
+    Value: !Ref WebEIP 
     Export:
-      Name: !Sub "${AWS::StackName}"
+      Name: !Sub "WebEIP-${AWS::StackName}"
+  JenkinsEIP:
+    Description: Elastic IP for our Jenkins Server
+    Value: !Ref JenkinsEIP 
+    Export:
+      Name: !Sub "JenkinsEIP-${AWS::StackName}"

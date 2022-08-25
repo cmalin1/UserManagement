@@ -3,5 +3,3 @@ aws cloudformation delete-stack --stack-name user-management-web
 aws cloudformation wait stack-delete-complete --stack-name user-management-web
 aws cloudformation delete-stack --stack-name user-management-security 
 aws cloudformation wait stack-delete-complete --stack-name user-management-security
-
-

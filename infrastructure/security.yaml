@@ -1,21 +1,4 @@
 Resources:
-  LabRole:
-    Type: "AWS::IAM::Role"
-    Properties:
-      ManagedPolicyArns: 
-        - "arn:aws:iam::aws:policy/CloudWatchFullAccess"
-        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-      AssumeRolePolicyDocument: 
-        Version: "2012-10-17"
-        Statement: 
-          - 
-            Effect: "Allow"
-            Principal: 
-              Service: 
-                - "ec2.amazonaws.com"
-            Action: 
-              - "sts:AssumeRole"
-      Path: "/"
 
   WebServerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -36,9 +19,7 @@ Resources:
     Properties: 
       Path: "/"
       Roles: 
-        - 
-          !Ref LabRole  
-    DependsOn: LabRole
+        - LabRole  
 
 Outputs:
   WebSecurityGroupId:

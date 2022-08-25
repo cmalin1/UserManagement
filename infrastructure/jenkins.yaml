@@ -5,7 +5,7 @@ Parameters:
     Description: Sizing for EC2 Instances
 
   KeyName:
-    Default: jenkins-java
+    Default: vockey
     Type: String
     Description: Key to access EC2 Instances via SSH
 Resources:
@@ -24,33 +24,13 @@ Resources:
           ToPort: 22
           CidrIp: 0.0.0.0/0
   
-  JenkinsRole:
-    Type: "AWS::IAM::Role"
-    Properties:
-      ManagedPolicyArns: 
-        - "arn:aws:iam::aws:policy/CloudWatchFullAccess"
-        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-        - "arn:aws:iam::aws:policy/IAMFullAccess"
-        - "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
-        - "arn:aws:iam::aws:policy/AWSCloudFormationFullAccess"
-      AssumeRolePolicyDocument: 
-        Version: "2012-10-17"
-        Statement: 
-          - 
-            Effect: "Allow"
-            Principal: 
-              Service: 
-                - "ec2.amazonaws.com"
-            Action: 
-              - "sts:AssumeRole"
-      Path: "/"
   JenkinsInstanceProfile: 
     Type: "AWS::IAM::InstanceProfile"
     Properties: 
       Path: "/"
       Roles: 
         - 
-          !Ref JenkinsRole    
+          LabRole    
   JenkinsServer:
     Type: AWS::EC2::Instance
     Properties:
@@ -80,3 +60,8 @@ Resources:
           - 
             Key: "Name"
             Value: !Sub "${AWS::StackName}"
+  JenkinsEIP:
+    Type: AWS::EC2::EIPAssociation
+    Properties: 
+      EIP: !ImportValue JenkinsEIP-user-management-ip
+      InstanceId: !Ref JenkinsServer
