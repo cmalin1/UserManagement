@@ -10,7 +10,7 @@ Resources:
     Properties:
       Tags: 
         - Key: "Name"
-          Value: !Sub "${AWS::StackName}"
+          Value: "jenkins"
 Outputs: 
   WebEIP:
     Description: Elastic IP for our Web Server

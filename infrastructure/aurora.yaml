@@ -1,0 +1,33 @@
+Parameters:
+  DBUser:
+    Type: String
+    Default: "{{resolve:secretsmanager:user-management-db-credentials:SecretString:username}}"
+  DBPassword:
+    Type: String
+    Default: "{{resolve:secretsmanager:user-management-db-credentials:SecretString:password}}"
+    NoEcho: True
+  Stage:
+    Type: String
+    Default: "dev"
+  DBSnapshotName:
+    Type: String
+    Default: "users-dev"
+  DBName:
+    Type: String
+    Default: "usermanagement"
+Resources:
+
+  RDSCluster:
+    Type: 'AWS::RDS::DBCluster'
+    Properties:
+      MasterUsername: !Ref DBUser
+      MasterUserPassword: !Ref DBPassword
+      DBClusterIdentifier: !Ref DBName
+      Engine: aurora
+      EngineVersion: 5.6.10a
+      EngineMode: serverless
+      ScalingConfiguration:
+        AutoPause: true
+        MinCapacity: 4
+        MaxCapacity: 32
+        SecondsUntilAutoPause: 1000
