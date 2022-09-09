@@ -29,7 +29,7 @@ Resources:
            DBInstanceClass: db.t2.micro
            AvailabilityZone: !Select [ 0, !GetAZs  '' ]
            AllocatedStorage: '5'
-           DBSnapshotIndentifier: !Ref DBSnapshotName
+           DBSnapshotIdentifier: !Ref DBSnapshotName
            PubliclyAccessible: false
            VPCSecurityGroups: 
            - !ImportValue user-management-security-DBSecurityGroup
