@@ -15,6 +15,9 @@ Parameters:
   DBName:
     Type: String
     Default: "usermanagement"
+  DBSnapshotName:
+    Type: String
+    Default: "user-dev"
 Resources:
   DatabaseInstance:
        Type: AWS::RDS::DBInstance
@@ -24,9 +27,9 @@ Resources:
            DBInstanceIdentifier: !Join ["-",["user-management-db", !Ref Stage]]
            MasterUserPassword: !Ref DBPassword
            DBInstanceClass: db.t2.micro
-           DBName: !Ref DBName
            AvailabilityZone: !Select [ 0, !GetAZs  '' ]
            AllocatedStorage: '5'
+           DBSnapshotIndentifier: !Ref DBSnapshotName
            PubliclyAccessible: false
            VPCSecurityGroups: 
            - !ImportValue user-management-security-DBSecurityGroup
