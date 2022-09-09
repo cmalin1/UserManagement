@@ -8,6 +8,7 @@ Resources:
         - "arn:aws:iam::aws:policy/IAMFullAccess"
         - "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
         - "arn:aws:iam::aws:policy/AWSCloudFormationFullAccess"
+        - "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
       AssumeRolePolicyDocument: 
         Version: "2012-10-17"
         Statement: 
