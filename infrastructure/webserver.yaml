@@ -45,7 +45,10 @@ Resources:
   WebEIP:
     Type: AWS::EC2::EIPAssociation
     Properties: 
-      EIP: !ImportValue WebEIP-user-management-ip
+      EIP: 
+        Fn::ImportValue: 
+          Fn::Sub:
+            'WebEIP-user-management-ip-${Stage}'
       InstanceId: !Ref WebServerNode1
 
 Outputs:

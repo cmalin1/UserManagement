@@ -44,7 +44,7 @@ pipeline {
         }
         stage ('Deploy-Dev-App'){
             steps {
-                deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://34.233.82.92:8080/')], contextPath: '', war: '**/*.war ' 
+                deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://3.218.26.193:8080/')], contextPath: '', war: '**/*.war ' 
             }
         }
  
@@ -60,7 +60,7 @@ pipeline {
         }
         stage ('Deploy-Staging-App'){
             steps {
-                deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://34.233.82.92:8080/')], contextPath: '', war: '**/*.war ' 
+                deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://3.211.225.21:8080/')], contextPath: '', war: '**/*.war ' 
             }
         }
     }
