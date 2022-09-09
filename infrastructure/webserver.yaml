@@ -3,11 +3,14 @@ Parameters:
     Default: t2.micro
     Type: String
     Description: Sizing for EC2 Instances
-
   KeyName:
     Default: vockey
     Type: String
     Description: Key to access EC2 Instances via SSH
+  Stage:
+    Default: dev
+    Type: String
+    Description: Default Environment to Create
 
 Resources:
   WebServerNode1:
@@ -30,6 +33,7 @@ Resources:
                     aws s3api get-object --bucket tomcat-config-cmalin1 --key tomcat-users.xml /usr/share/tomcat/conf/tomcat-users.xml
                     service tomcat start
                     systemctl enable tomcat.service
+                    echo Stage="${Stage}" >> /usr/share/tomcat/conf/tomcat.conf
 
         SecurityGroupIds:
           - !ImportValue user-management-security-WebSecurityGroupId

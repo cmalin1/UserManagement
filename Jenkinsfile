@@ -29,7 +29,7 @@ pipeline {
                 }
             }
         }
-        stage ('Deploy-Dev') {
+        stage ('Deploy-Dev-Infrastructure') {
             steps {
                 sh """
                     aws cloudformation deploy --stack-name user-management-vpc --template-file ./infrastructure/vpc.yaml --region us-east-1 --no-fail-on-empty-changeset
@@ -42,7 +42,7 @@ pipeline {
                 """
             }
         }
-        stage ('Deploy'){
+        stage ('Deploy-App'){
             steps {
                 deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://34.233.82.92:8080/')], contextPath: '', war: '**/*.war ' 
             }
