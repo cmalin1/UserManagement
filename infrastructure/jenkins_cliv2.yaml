@@ -1,0 +1,65 @@
+Parameters: 
+  InstanceType:
+    Default: t2.micro
+    Type: String
+    Description: Sizing for EC2 Instances
+
+  KeyName:
+    Default: vockey
+    Type: String
+    Description: Key to access EC2 Instances via SSH
+Resources:
+  JenkinsSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http to client host
+      VpcId: !ImportValue user-management-vpc
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+  
+  JenkinsInstanceProfile: 
+    Type: "AWS::IAM::InstanceProfile"
+    Properties: 
+      Path: "/"
+      Roles: 
+        - 
+          LabRole    
+  JenkinsServer:
+    Type: AWS::EC2::Instance
+    Properties:
+        InstanceType: !Ref InstanceType
+        ImageId: ami-052efd3df9dad4825
+        KeyName: !Ref KeyName
+        IamInstanceProfile: !Ref JenkinsInstanceProfile
+        UserData: 
+            Fn::Base64: 
+             
+             !Sub |
+                #!/bin/bash             
+                    apt-get update
+                    apt install default-jdk -y
+                    wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+                    sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+                    apt-get update -y
+                    apt-get install jenkins -y
+                    systemctl start jenkins
+                    systemctl enable jenkins
+                    apt-get install maven -y
+                    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+                    apt install unzip
+                    unzip awscliv2.zip
+                    sudo ./aws/install
+        SecurityGroupIds:
+          - !Ref JenkinsSecurityGroup
+        SubnetId: !ImportValue user-management-vpc-PublicSubnet1
+        Tags: 
+          - 
+            Key: "Name"
+            Value: !Sub "${AWS::StackName}"
