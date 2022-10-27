@@ -44,24 +44,24 @@ pipeline {
         }
         stage ('Deploy-Dev-App'){
             steps {
-                deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://3.218.26.193:8080/')], contextPath: '', war: '**/*.war ' 
+                deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://52.54.104.198:8080/')], contextPath: '', war: '**/*.war ' 
             }
         }
  
-        stage ('Deploy-Staing-Infrastructure') {
-            steps {
-                sh """
-                    
-                    aws cloudformation deploy --stack-name user-management-web-staging --template-file ./infrastructure/webserver.yaml --parameter-overrides file://infrastructure/webserver-param-staging.json --region us-east-1 --no-fail-on-empty-changeset
-                    
-                    aws cloudformation deploy --stack-name user-management-db-staging --template-file ./infrastructure/db.yaml --parameter-overrides file://infrastructure/db-param-staging.json --region us-east-1 --no-fail-on-empty-changeset
-                """
-            }
-        }
-        stage ('Deploy-Staging-App'){
-            steps {
-                deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://3.211.225.21:8080/')], contextPath: '', war: '**/*.war ' 
-            }
-        }
+ //       stage ('Deploy-Staing-Infrastructure') {
+ //           steps {
+ //               sh """
+ //                   
+ //                   aws cloudformation deploy --stack-name user-management-web-staging --template-file ./infrastructure/webserver.yaml --parameter-overrides file://infrastructure/webserver-param-staging.json --region us-east-1 --no-fail-on-empty-changeset
+ //                   
+ //                   aws cloudformation deploy --stack-name user-management-db-staging --template-file ./infrastructure/db.yaml --parameter-overrides file://infrastructure/db-param-staging.json --region us-east-1 --no-fail-on-empty-changeset
+ //               """
+ //           }
+ //       }
+ //       stage ('Deploy-Staging-App'){
+ //           steps {
+ //               deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://3.211.225.21:8080/')], contextPath: '', war: '**/*.war ' 
+ //           }
+ //       }
     }
 }

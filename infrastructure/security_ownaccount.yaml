@@ -1,4 +1,27 @@
 Resources:
+  LabRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      ManagedPolicyArns: 
+        - "arn:aws:iam::aws:policy/CloudWatchFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+        - "arn:aws:iam::aws:policy/IAMFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+        - "arn:aws:iam::aws:policy/AWSCloudFormationFullAccess"
+        - "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
+        - "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              Service:
+                - "ec2.amazonaws.com"
+            Action: 
+                - "sts:AssumeRole"
+      Path: "/"
+      RoleName: "LabRole"
 
   WebServerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -19,7 +42,7 @@ Resources:
     Properties: 
       Path: "/"
       Roles: 
-        - LabRole  
+        - !Ref LabRole  
   DBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
