@@ -42,7 +42,7 @@ pipeline {
                 """
             }
         }
-        stage('Test-Web-Dev'){
+        stage('Ping-Web-Dev'){
             steps{
                 ansiblePlaybook credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: 'ansible/inventory.yaml', playbook: 'ansible/ping-web-playbook.yaml'
             }
@@ -52,7 +52,12 @@ pipeline {
                 deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://52.54.104.198:8080/')], contextPath: '', war: '**/*.war ' 
             }
         }
- 
+        stage('Test-User-Management'){
+            steps{
+                ansiblePlaybook become: true, credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: 'ansible/inventory.yaml', playbook: 'ansible/test-web-playbook.yaml'
+            }
+        }
+
  //       stage ('Deploy-Staing-Infrastructure') {
  //           steps {
  //               sh """
