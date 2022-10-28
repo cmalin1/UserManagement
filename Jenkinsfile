@@ -44,7 +44,7 @@ pipeline {
         }
         stage('Test-Web-Dev'){
             steps{
-                ansiblePlaybook inventory: 'ansible/inventory.yaml', playbook: 'ansible/playbook.yaml'
+                ansiblePlaybook credentialsId='webserver', inventory: 'ansible/inventory.yaml', playbook: 'ansible/playbook.yaml'
             }
         }
         stage ('Deploy-Dev-App'){
