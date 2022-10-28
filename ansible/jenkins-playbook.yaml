@@ -1,0 +1,7 @@
+- name: Update Ansible on Jenkins
+  hosts: jenkins
+  become: yes
+  become_user: root
+  tasks:
+     - name: Install latest version of Ansible
+       apt: name=ansible update_cache=yes state=latest

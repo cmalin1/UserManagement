@@ -42,6 +42,11 @@ pipeline {
                 """
             }
         }
+        stage('Test-Web-Dev'){
+            steps{
+                ansiblePlaybook inventory: 'ansible/inventory.yaml', playbook: 'ansible/playbook.yaml'
+            }
+        }
         stage ('Deploy-Dev-App'){
             steps {
                 deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://52.54.104.198:8080/')], contextPath: '', war: '**/*.war ' 

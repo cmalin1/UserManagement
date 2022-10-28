@@ -1,0 +1,13 @@
+- name: Upload Tomcat Users to Web Servers
+  hosts: web
+  become: yes
+  become_user: root
+  
+  tasks:
+   - name: Upload file
+     copy:
+          src: tomcat-users.xml
+          dest: /usr/share/tomcat/conf/tomcat-users.xml
+     tags:
+      - simple_copy
+       

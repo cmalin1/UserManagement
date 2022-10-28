@@ -1,0 +1,12 @@
+virtualmachines:
+  hosts:
+    web:
+      ansible_host: 52.54.104.198 
+      ansible_user: ec2-user
+      sudo: yes
+    jenkins:
+      ansible_host: 44.193.56.229
+      ansible_user: ubuntu
+    local:
+      ansible_host: localhost
+      ansible_python_interpreter: /usr/bin/python3
