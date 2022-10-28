@@ -38,7 +38,6 @@ pipeline {
 
                     aws cloudformation deploy --stack-name user-management-web-dev --template-file ./infrastructure/webserver.yaml --parameter-overrides file://infrastructure/webserver-param-dev.json --region us-east-1 --no-fail-on-empty-changeset
                     
-                    //aws cloudformation deploy --stack-name user-management-db-dev --template-file ./infrastructure/db.yaml --parameter-overrides file://infrastructure/db-param-dev.json --region us-east-1 --no-fail-on-empty-changeset
                 """
             }
         }
