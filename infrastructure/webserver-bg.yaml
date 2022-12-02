@@ -120,6 +120,10 @@ Resources:
       DefaultActions:
         - Type: forward
           TargetGroupArn: !Ref BlueTargetGroup
+
+        - Type: forward
+          TargetGroupArn: !Ref GreenTargetGroup
+
       LoadBalancerArn: !Ref ApplicationLoadBalancer
       Port: 80
       Protocol: HTTP
