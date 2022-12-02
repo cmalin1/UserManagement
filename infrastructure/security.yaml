@@ -14,6 +14,10 @@ Resources:
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
   WebEC2InstanceProfile: 
     Type: "AWS::IAM::InstanceProfile"
     Properties: 
@@ -43,6 +47,12 @@ Outputs:
     Value: !Ref WebEC2InstanceProfile
     Export: 
       Name: !Sub "${AWS::StackName}-WebEC2InstanceProfile"
+
+  WebEC2InstanceProfileArn:
+    Description: ARN of the Role that will allow EC2 to communicate with other AWS Services such as CloudWatch and S3
+    Value: !GetAtt WebEC2InstanceProfile.Arn 
+    Export: 
+      Name: !Sub "${AWS::StackName}-WebEC2InstanceProfileArn"
 
   DBSecurityGroup:
     Description: Exporting DB Security group to use in DB stack
