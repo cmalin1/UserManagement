@@ -1,4 +1,4 @@
-- name: My first play
+- name: Ping a Server
   hosts: web
   tasks:
    - name: Ping my hosts
