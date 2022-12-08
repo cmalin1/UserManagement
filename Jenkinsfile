@@ -1,5 +1,6 @@
 pipeline { 
     agent any  
+    """
     parameters {
         choice (name: 'chooseNode', choices: ['Green', 'Blue'], description: 'Choose which Environment to Deploy: ')
     }
@@ -8,6 +9,7 @@ pipeline {
         blueARN = 'arn:aws:elasticloadbalancing:ap-south-1:745825563476:targetgroup/blue/2e98c824a11a99c8'
         greenARN = 'arn:aws:elasticloadbalancing:ap-south-1:745825563476:targetgroup/Green/1aa96e9ddb6bd5c5'
     }
+    """
     tools { 
         maven 'maven 3.8.6' 
         jdk 'jdk11' 
