@@ -65,6 +65,11 @@ pipeline {
                 ansiblePlaybook become: true, credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: 'ansible/inventory.yaml', playbook: 'ansible/test-web-playbook-green.yaml'
             }
         }
+        stage("Approve") {
+            emailext subject: "Approve Green Deploy" body: "Approve continuing to blue deployment with link"
+            input message: "Approve Green Deploy?" submitter: "admin_group"
+        }
+
         stage ('Deploy-Dev-Infrastructure-Blue') {
             steps {
                 sh """
