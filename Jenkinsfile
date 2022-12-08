@@ -71,7 +71,9 @@ pipeline {
         }
 
         stage('Approval') {
-            input "Deploy to Blue?"
+            steps {
+                input "Deploy to Blue?"
+            }
         }
         stage ('Deploy-Dev-App-Blue'){
             steps {
