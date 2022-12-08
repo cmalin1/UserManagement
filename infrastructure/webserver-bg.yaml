@@ -13,11 +13,11 @@ Parameters:
     Description: Default Environment to Create
   BlueWeight:
     Default: 1
-    Type: Integer
+    Type: Number
     Description: LB Weight for Blue Instance(s)
   GreenWeight:
     Default: 1
-    Type: Integer
+    Type: Number
     Description: LB Weight for Green Instance(s)
 
 Resources:
