@@ -67,7 +67,7 @@ pipeline {
         }
         stage('Approve') {
             steps {
-                emailext subject: 'Approve Blue Deploy', body: 'Approve continuing to blue deployment with link', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
+                emailext subject: 'Approve Blue Deploy', body: 'Approve continuing to blue deployment.', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
                 input message: 'Approve Blue Deploy?', submitter: 'admin_group'
             }
         }
