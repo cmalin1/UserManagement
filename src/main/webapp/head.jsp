@@ -5,7 +5,7 @@
 
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>ENTER YOUR NAME - ${title} - Testing Blue/Green Deployment</title>
+    <title>BG Deploy - Cathie - ${title} - Testing Blue/Green Deployment</title>
 
     <!-- used for add, edit, delete icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
