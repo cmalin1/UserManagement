@@ -66,15 +66,13 @@ pipeline {
             }
         }
         stage('Approve') {
-            emailext subject: "Approve Green Deploy" body: "Approve continuing to blue deployment with link"
-            input message: "Approve Green Deploy?" submitter: "admin_group"
-        }
-
-        stage('Approval') {
             steps {
-                input "Deploy to Blue?"
+                emailext subject: "Approve Green Deploy" body: "Approve continuing to blue deployment with link"
+                input message: "Approve Green Deploy?" submitter: "admin_group"
             }
         }
+
+        
         stage ('Deploy-Dev-App-Blue'){
             steps {
                 deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://52.54.104.198:8080/')], contextPath: '', war: '**/*.war ' 
