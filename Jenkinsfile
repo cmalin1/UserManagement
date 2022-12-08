@@ -38,14 +38,14 @@ pipeline {
                 }
             }
         }
-        stage ('Deploy-Dev-Infrastructure') {
+        stage ('Deploy-Dev-Infrastructure-Green') {
             steps {
                 sh """
                     aws cloudformation deploy --stack-name user-management-vpc --template-file ./infrastructure/vpc.yaml --region us-east-1 --no-fail-on-empty-changeset
 
                     aws cloudformation deploy --stack-name user-management-security --template-file ./infrastructure/security.yaml --capabilities CAPABILITY_NAMED_IAM --region us-east-1 --no-fail-on-empty-changeset
 
-                    aws cloudformation deploy --stack-name user-management-web-dev --template-file ./infrastructure/webserver-bg.yaml --parameter-overrides file://infrastructure/webserver-param-dev.json --region us-east-1 --no-fail-on-empty-changeset
+                    aws cloudformation deploy --stack-name user-management-web-dev --template-file ./infrastructure/webserver-bg.yaml --parameter-overrides file://infrastructure/webserver-param-dev-green.json --region us-east-1 --no-fail-on-empty-changeset
                     
                 """
             }
@@ -65,6 +65,14 @@ pipeline {
                 ansiblePlaybook become: true, credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: 'ansible/inventory.yaml', playbook: 'ansible/test-web-playbook-green.yaml'
             }
         }
+        stage ('Deploy-Dev-Infrastructure-Blue') {
+            steps {
+                sh """
+                    aws cloudformation deploy --stack-name user-management-web-dev --template-file ./infrastructure/webserver-bg.yaml --parameter-overrides file://infrastructure/webserver-param-dev-blue.json --region us-east-1 --no-fail-on-empty-changeset
+                    
+                """
+            }
+        }
         stage ('Deploy-Dev-App-Blue'){
             steps {
                 deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://52.54.104.198:8080/')], contextPath: '', war: '**/*.war ' 
@@ -73,6 +81,15 @@ pipeline {
         stage('Test-User-Management-Dev-Blue'){
             steps{
                 ansiblePlaybook become: true, credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: 'ansible/inventory.yaml', playbook: 'ansible/test-web-playbook-blue.yaml'
+            }
+        }
+
+        stage ('Deploy-Dev-Infrastructure-Both') {
+            steps {
+                sh """
+                    aws cloudformation deploy --stack-name user-management-web-dev --template-file ./infrastructure/webserver-bg.yaml --parameter-overrides file://infrastructure/webserver-param-dev.json --region us-east-1 --no-fail-on-empty-changeset
+                    
+                """
             }
         }
  //       stage ('Deploy-Staing-Infrastructure') {

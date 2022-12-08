@@ -11,6 +11,14 @@ Parameters:
     Default: dev
     Type: String
     Description: Default Environment to Create
+  BlueWeight:
+    Default: 1
+    Type: Integer
+    Description: LB Weight for Blue Instance(s)
+  GreenWeight:
+    Default: 1
+    Type: Integer
+    Description: LB Weight for Green Instance(s)
 
 Resources:
   LaunchTemplate:
@@ -122,9 +130,9 @@ Resources:
           ForwardConfig:
             TargetGroups:
               - TargetGroupArn: !Ref BlueTargetGroup
-                Weight: 1
+                Weight: !Ref BlueWeight
               - TargetGroupArn: !Ref GreenTargetGroup
-                Weight: 0
+                Weight: !Ref GreenWeight
       LoadBalancerArn: !Ref ApplicationLoadBalancer
       Port: 80
       Protocol: HTTP
