@@ -67,8 +67,8 @@ pipeline {
         }
         stage('Approve') {
             steps {
-                emailext subject: 'Approve Blue Deploy' 
-                input message: 'Approve Blue Deploy?'
+                emailext subject: 'Approve Blue Deploy', body: 'Approve continuing to blue deployment with link'
+                input message: 'Approve Blue Deploy?', submitter: 'admin_group'
             }
         }
 
