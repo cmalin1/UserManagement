@@ -57,7 +57,7 @@ pipeline {
         }
         stage ('Deploy-Dev-App-Green'){
             steps {
-                deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://54.159.77.242:8080/')], contextPath: '', war: '**/*.war ' 
+                deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://54.211.124.30:8080/')], contextPath: '', war: '**/*.war ' 
             }
         }
         stage('Test-User-Management-Dev-Green'){

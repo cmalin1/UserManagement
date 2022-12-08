@@ -5,7 +5,7 @@ virtualmachines:
       ansible_user: ec2-user
       sudo: yes
     web-green:
-      ansible_host: 54.159.77.242
+      ansible_host: 54.211.124.30
       ansible_user: ec2-user
       sudo: yes      
     jenkins:
