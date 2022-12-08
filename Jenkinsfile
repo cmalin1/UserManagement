@@ -53,17 +53,26 @@ pipeline {
                 ansiblePlaybook credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: 'ansible/inventory.yaml', playbook: 'ansible/ping-web-playbook.yaml'
             }
         }
-        stage ('Deploy-Dev-App'){
+        stage ('Deploy-Dev-App-Green'){
+            steps {
+                deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://54.159.77.242:8080/')], contextPath: '', war: '**/*.war ' 
+            }
+        }
+        stage('Test-User-Management-Dev-Green'){
+            steps{
+                ansiblePlaybook become: true, credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: 'ansible/inventory.yaml', playbook: 'ansible/test-web-playbook-green.yaml'
+            }
+        }
+        stage ('Deploy-Dev-App-Blue'){
             steps {
                 deploy adapters: [tomcat9(credentialsId: 'admin', path: '', url: 'http://52.54.104.198:8080/')], contextPath: '', war: '**/*.war ' 
             }
         }
-        stage('Test-User-Management'){
+        stage('Test-User-Management-Dev-Green'){
             steps{
-                ansiblePlaybook become: true, credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: 'ansible/inventory.yaml', playbook: 'ansible/test-web-playbook.yaml'
+                ansiblePlaybook become: true, credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: 'ansible/inventory.yaml', playbook: 'ansible/test-web-playbook-blue.yaml'
             }
         }
-
  //       stage ('Deploy-Staing-Infrastructure') {
  //           steps {
  //               sh """

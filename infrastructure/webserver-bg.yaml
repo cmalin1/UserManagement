@@ -124,7 +124,7 @@ Resources:
               - TargetGroupArn: !Ref BlueTargetGroup
                 Weight: 1
               - TargetGroupArn: !Ref GreenTargetGroup
-                Weight: 1
+                Weight: 0
       LoadBalancerArn: !Ref ApplicationLoadBalancer
       Port: 80
       Protocol: HTTP
