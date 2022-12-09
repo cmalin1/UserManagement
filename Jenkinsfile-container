@@ -32,6 +32,7 @@ pipeline {
             steps {
                 script {
                     sh "aws ecs update-service --service UserManagementService --cluster user-management-web-dev-ECSDemoCluster-gA6Qvps8yGWm --force-new-deployment"
+                    sh "aws ecs wait services-stable --cluster user-management-web-dev-ECSDemoCluster-gA6Qvps8yGWm --services UserManagementService"
                 }
 
             }
