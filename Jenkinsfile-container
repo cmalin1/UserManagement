@@ -32,7 +32,6 @@ pipeline {
             steps {
                 script {
                     sh "aws ecs update-service --service user-management-web-dev-ECSDemoService-RodXCNonJyvX --cluster user-management-web-dev-ECSDemoCluster-O7A02rw5jYiG"
-                    sh "aws ecs wait services-stable --service $internationalService --cluster $internationalCluster"
                 }
 
             }
