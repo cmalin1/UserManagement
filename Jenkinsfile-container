@@ -1,0 +1,32 @@
+pipeline { 
+    agent any  
+
+    tools { 
+        maven 'maven 3.8.6' 
+        jdk 'jdk11' 
+    }
+    stage ('Build') {
+            steps {
+                sh 'mvn -B -DskipTests clean package' 
+            }
+        }
+    stages {
+        stage('Docker Build') {
+            steps {
+                script {
+                    docker.build('cjm/usermanagement')
+                }
+            }
+        }
+    }
+    stage('Docker Push SG') {
+      steps {
+        script {
+          
+            sh "docker tag cjm/usermanagement <your-ecr-uri>"
+            sh "docker push 104696712085.dkr.ecr.us-east-1.amazonaws.com/usermanagement:latest"
+          }
+        }
+      }
+    }
+}
