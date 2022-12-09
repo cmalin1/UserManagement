@@ -14,7 +14,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'sudo docker build -t cjm/usermanagement .'
+                sh 'docker build -t cjm/usermanagement .'
             }
         }
 
@@ -22,8 +22,8 @@ pipeline {
             steps {
                 script {
                 
-                    sh "sudo docker tag cjm/usermanagement 104696712085.dkr.ecr.us-east-1.amazonaws.com/usermanagement:latest"
-                    sh "sudo docker push 104696712085.dkr.ecr.us-east-1.amazonaws.com/usermanagement:latest"
+                    sh "docker tag cjm/usermanagement 104696712085.dkr.ecr.us-east-1.amazonaws.com/usermanagement:latest"
+                    sh "docker push 104696712085.dkr.ecr.us-east-1.amazonaws.com/usermanagement:latest"
                 }
             }
         }
