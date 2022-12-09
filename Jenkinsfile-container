@@ -6,19 +6,19 @@ pipeline {
         jdk 'jdk11' 
     }
     stages{
-        stage ('Build') {
+        stage ('Build Application') {
             steps {
                 sh 'mvn -B -DskipTests clean package' 
             }
         }
 
-        stage('Docker Build') {
+        stage('Build Docker Image') {
             steps {
                 sh 'docker build -t cjm/usermanagement .'
             }
         }
 
-        stage('Docker Push SG') {
+        stage('Push Docker Image to ECR') {
             steps {
                 script {
                     sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 104696712085.dkr.ecr.us-east-1.amazonaws.com"
@@ -26,6 +26,17 @@ pipeline {
                     sh "docker push 104696712085.dkr.ecr.us-east-1.amazonaws.com/usermanagement:latest"
                 }
             }
+        }
+
+        stage('Update ECS Task'){
+            steps {
+                script {
+                    sh "aws ecs update-service --service user-management-web-dev-ECSDemoService-RodXCNonJyvX --cluster user-management-web-dev-ECSDemoCluster-O7A02rw5jYiG --force-new-deployment"
+                    sh "aws ecs wait services-stable --service user-management-web-dev-ECSDemoService-RodXCNonJyvX --cluster user-management-web-dev-ECSDemoCluster-O7A02rw5jYiG"
+                }
+
+            }
+
         }
     }
 }
