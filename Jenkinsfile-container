@@ -21,7 +21,7 @@ pipeline {
         stage('Docker Push SG') {
             steps {
                 script {
-                
+                    sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 104696712085.dkr.ecr.us-east-1.amazonaws.com"
                     sh "docker tag cjm/usermanagement 104696712085.dkr.ecr.us-east-1.amazonaws.com/usermanagement:latest"
                     sh "docker push 104696712085.dkr.ecr.us-east-1.amazonaws.com/usermanagement:latest"
                 }
