@@ -31,7 +31,7 @@ pipeline {
         stage('Update ECS Task'){
             steps {
                 script {
-                    sh "aws ecs update-service --service user-management-web-dev-ECSDemoService-RodXCNonJyvX --cluster user-management-web-dev-ECSDemoCluster-O7A02rw5jYiG"
+                    sh "aws ecs update-service --task-definition ecs-demo --service user-management-web-dev-ECSDemoService-RodXCNonJyvX --cluster user-management-web-dev-ECSDemoCluster-O7A02rw5jYiG --force-new-deployment"
                 }
 
             }

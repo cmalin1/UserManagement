@@ -110,46 +110,30 @@ Resources:
       Family: ecs-demo
   ECSDemoCluster:
     Type: 'AWS::ECS::Cluster'
-    Properties: {}
+    Properties: 
+      ClusterName: UserManagementCluster
   ECSDemoService:
     Type: 'AWS::ECS::Service'
+    DependsOn: ALBListener
     Properties:
+      ServiceName: UserManagementService
       Cluster: !Ref ECSDemoCluster
       DesiredCount: 1
-      DeploymentController:
-        Type: EXTERNAL
-  BlueTaskSet:
-    Type: 'AWS::ECS::TaskSet'
-    Properties:
-      Cluster: !Ref ECSDemoCluster
+      TaskDefinition: !Ref BlueTaskDefinition
       LaunchType: FARGATE
+      LoadBalancers:
+        - ContainerName: UserManagement
+          ContainerPort: 8080
+          TargetGroupArn: !Ref BlueTargetGroup
       NetworkConfiguration:
-        AwsVpcConfiguration:
+        AwsvpcConfiguration:
           AssignPublicIp: ENABLED
           SecurityGroups:
             - !ImportValue user-management-security-WebSecurityGroupId
           Subnets:
             - !ImportValue user-management-vpc-PublicSubnet1
             - !ImportValue user-management-vpc-PublicSubnet2
-      PlatformVersion: 1.4.0
-      Scale:
-        Unit: PERCENT
-        Value: 100
-      Service: !Ref ECSDemoService
-      TaskDefinition: !Ref BlueTaskDefinition
-      LoadBalancers:
-        - ContainerName: UserManagement
-          ContainerPort: 8080
-          TargetGroupArn: !Ref BlueTargetGroup
-  PrimaryTaskSet:
-    Type: 'AWS::ECS::PrimaryTaskSet'
-    Properties:
-      Cluster: !Ref ECSDemoCluster
-      Service: !Ref ECSDemoService
-      TaskSetId: !GetAtt 
-        - BlueTaskSet
-        - Id
-
+  
 Outputs:
   LoadBalancerURL:
     Description: "URL to access our Tomcat Server"
